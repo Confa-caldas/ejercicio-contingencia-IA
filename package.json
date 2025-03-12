@@ -20,11 +20,8 @@
     "@angular/router": "^17.3.0",
     "@fortawesome/angular-fontawesome": "^1.0.0",
     "bootstrap": "^4.5.2",
-<<<<<<< HEAD
-    "ngx-cookie-service": "^17.0.0",
-=======
     "jquery": "^3.7.1",
->>>>>>> b7f36c8f64ab51c704e478eba16b6b8dab4ce18b
+    "ngx-cookie-service": "^17.0.0",
     "ngx-webcam": "^0.4.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
