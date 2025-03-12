@@ -13,6 +13,13 @@ export class MenuComponent {
   constructor(private router: Router) {}
 
   navigateTo(route: string): void {
-    this.router.navigate([route]);
+    this.router.navigate([`/menu/${route}`]);
+  }
+
+  toggleMenu(): void {
+    const wrapper = document.getElementById('wrapper');
+    if (wrapper) {
+      wrapper.classList.toggle('toggled');
+    }
   }
 }

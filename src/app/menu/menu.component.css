@@ -35,3 +35,56 @@ a:hover {
   font-weight: bold;
   color: #0056b3; /* Azul más oscuro para el enlace activo */
 }
+
+#wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+
+#sidebar-wrapper {
+  min-height: 100vh;
+  width: 250px;
+  margin-left: -250px;
+  transition: margin 0.25s ease-out;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+  margin-left: 0;
+}
+
+#page-content-wrapper {
+  width: 100%;
+}
+
+.sidebar-heading {
+  padding: 0.875rem 1.25rem;
+  font-size: 1.2rem;
+}
+
+.list-group-item {
+  transition: background-color 0.2s;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+@media (min-width: 992px) {
+  #sidebar-wrapper {
+    margin-left: 0;
+  }
+
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
+
+  #wrapper.toggled #sidebar-wrapper {
+    margin-left: -250px;
+  }
+
+  #menu-toggle {
+    display: none; /* Ocultar el botón en pantallas grandes */
+  }
+}
