@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
 import { Paciente } from '../interfaces/paciente.interface';
 import { Medicamento } from '../interfaces/medicamento.interface';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-medicamentos',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './medicamentos.component.html',
   styleUrl: './medicamentos.component.css'
 })
 export class MedicamentosComponent {
+  mostrarInformacion = false;
   paciente: Paciente = {
     nombre: '',
     tipoDocumento: '',
@@ -30,6 +31,7 @@ export class MedicamentosComponent {
     const documento = (document.getElementById('searchDocumento') as HTMLInputElement).value;
     // Simulación de búsqueda de paciente
     if (documento === '123456') {
+      this.mostrarInformacion = true;
       this.paciente = {
         nombre: 'Juan Pérez',
         tipoDocumento: 'CC',
@@ -59,6 +61,7 @@ export class MedicamentosComponent {
         // Agrega más medicamentos si es necesario
       ];
     } else {
+      this.mostrarInformacion = false;
       // Manejar caso de paciente no encontrado
       alert('Paciente no encontrado');
     }
