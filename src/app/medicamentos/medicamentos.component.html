@@ -79,18 +79,20 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let medicamento of medicamentos">
-        <td>{{ medicamento.nombre }}</td>
-        <td>{{ medicamento.dosis }}</td>
-        <td>{{ medicamento.observacion }}</td>
-        <td>{{ medicamento.horaAplicacion }}</td>
-        <td>{{ medicamento.origen }}</td>
-        <td>{{ medicamento.unidadAdministracion }}</td>
-        <td>{{ medicamento.viaAdministracion }}</td>
-        <td>{{ medicamento.indicacionEspecial }}</td>
-        <td>{{ medicamento.frecuencia }}</td>
-        <td>{{ medicamento.estado }}</td>
-      </tr>
+      @for (medicamento of medicamentos; track medicamento.nombre; let i = $index) {
+        <tr>
+          <td>{{ medicamento.nombre }}</td>
+          <td>{{ medicamento.dosis }}</td>
+          <td>{{ medicamento.observacion }}</td>
+          <td>{{ medicamento.horaAplicacion }}</td>
+          <td>{{ medicamento.origen }}</td>
+          <td>{{ medicamento.unidadAdministracion }}</td>
+          <td>{{ medicamento.viaAdministracion }}</td>
+          <td>{{ medicamento.indicacionEspecial }}</td>
+          <td>{{ medicamento.frecuencia }}</td>
+          <td>{{ medicamento.estado }}</td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>

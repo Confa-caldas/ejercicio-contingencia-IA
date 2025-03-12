@@ -44,9 +44,13 @@ a:hover {
 
 #sidebar-wrapper {
   min-height: 100vh;
-  width: 250px;
-  margin-left: -250px;
-  transition: margin 0.25s ease-out;
+  margin-left: -15rem;
+  transition: margin .25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+  padding: 0.875rem 1.25rem;
+  font-size: 1.2rem;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -57,17 +61,21 @@ a:hover {
   width: 100%;
 }
 
-.sidebar-heading {
-  padding: 0.875rem 1.25rem;
-  font-size: 1.2rem;
-}
-
 .list-group-item {
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border-left: 3px solid transparent;
 }
 
 .list-group-item:hover {
-  background-color: #f8f9fa;
+  border-left: 3px solid #007bff;
+  background-color: #e9ecef !important;
+}
+
+.list-group-item fa-icon {
+  width: 20px;
+  text-align: center;
+  margin-right: 10px;
 }
 
 @media (min-width: 992px) {
@@ -81,10 +89,14 @@ a:hover {
   }
 
   #wrapper.toggled #sidebar-wrapper {
-    margin-left: -250px;
+    margin-left: -15rem;
   }
 
   #menu-toggle {
     display: none; /* Ocultar el botón en pantallas grandes */
   }
+}
+
+#menu-toggle {
+  padding: 0.5rem 1rem;
 }

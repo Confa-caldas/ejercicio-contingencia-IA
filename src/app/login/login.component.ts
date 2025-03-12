@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
-import { WebcamImage, WebcamInitError, WebcamUtil,WebcamModule } from 'ngx-webcam';
+import { WebcamImage, WebcamInitError, WebcamUtil, WebcamModule } from 'ngx-webcam';
 import { ReactiveFormsModule, UntypedFormGroup, UntypedFormControl, Validators } from "@angular/forms";
+import { AuthenticationService } from '../services/authentication.service';
+import { UtilitiesServiceService } from '../services/utilities.service';
 import { CommonModule } from '@angular/common';
+import $ from 'jquery';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +23,7 @@ export class LoginComponent {
   public deviceId: string = '';
   public videoOptions: MediaTrackConstraints = {};
   public errors: WebcamInitError[] = [];
+  public nombreUsuario: string = '';
 
   // latest snapshot
   public webcamImage: WebcamImage | null = null;
@@ -27,9 +31,9 @@ export class LoginComponent {
   // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
   // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
-  private nextWebcam: Subject<boolean|string> = new Subject<boolean|string>();
+  private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authenticationService: AuthenticationService, private utilitiesService: UtilitiesServiceService) { }
 
   public triggerSnapshot(): void {
     this.trigger.next();
@@ -43,18 +47,102 @@ export class LoginComponent {
     this.errors.push(error);
   }
 
-  public showNextWebcam(directionOrDeviceId: boolean|string): void {
+  public showNextWebcam(directionOrDeviceId: boolean | string): void {
     // true => move forward through devices
     // false => move backwards through devices
     // string => move to device with given deviceId
     this.nextWebcam.next(directionOrDeviceId);
   }
 
-  public handleImage(webcamImage: WebcamImage): void {
+  handleImage(webcamImage: WebcamImage ): void {
     this.webcamImage = webcamImage;
+    this.validateFace();
+  }
+
+  validateFace() {
+
+    this.utilitiesService.loading = true;
     console.log(this.webcamImage);
-    // Aquí puedes implementar la lógica de validación facial
-    // Por ahora, simularemos una autenticación exitosa
+
+    if (this.webcamImage) {
+      this.authenticationService
+        .inicioSesionInternoV2(this.webcamImage.imageAsBase64)
+        .subscribe(
+          (response: any) => {
+            if (
+              response.doc === 'No se identifico.' ||
+              response.doc === 'error'
+            ) {
+              this.utilitiesService.loading = false;
+              setTimeout(() => {
+                this.utilitiesService.showError('¡Ten presente!', response.doc);
+                $('.btn-modal-error').click();
+              }, 500);
+            } else {
+              if (response.est) {
+                const estadoUsuario = response.est;
+                const numeroDocumento: String[] = response.doc
+                  .toString()
+                  .split('-');
+                if (numeroDocumento[0] != null && numeroDocumento[0] != '' && this.webcamImage) {
+                  let bodySas = {
+                    documento: numeroDocumento[0],
+                  }
+                  if (estadoUsuario) {
+                    this.authenticationService.inicioSesionSas(bodySas).subscribe(
+                      (response: any) => {
+                        const estado = response.estado;
+                        const respuesta = response.respuesta;
+                        const nombre = response.nombre;
+                        const token = response.token;
+                        this.nombreUsuario = response.usuarioIngreso;
+                        if (estado == 'Activo') {
+                          this.loginExitoso(token, nombre, this.nombreUsuario);
+                        } else {
+                          setTimeout(() => {
+                            this.utilitiesService.showError('¡Ten presente!', respuesta);
+                            $('.btn-modal-error').click();
+                          }, 500);
+                        }
+                      }
+                    )
+                    this.utilitiesService.loading = false;
+                  } else {
+                    this.utilitiesService.loading = false;
+                    setTimeout(() => {
+                      this.utilitiesService.showError('¡Ten presente!', response.mensaje);
+                      $('.btn-modal-error').click();
+                    }, 500);
+                  }
+                }
+              } else {
+                this.utilitiesService.loading = false;
+                setTimeout(() => {
+                  this.utilitiesService.showError('¡Ten presente!', response.msg);
+                  $('.btn-modal-error').click();
+                }, 500);
+              }
+            }
+
+          },
+          (error: any) => {
+            this.utilitiesService.loading = true;
+            setTimeout(() => {
+              this.utilitiesService.showError('¡Ten presente!', error);
+              $('.btn-modal-error').click();
+            }, 500);
+          }
+        );
+    }
+  }
+
+  cancelarInicioSesion() {
+    this.router.navigate(['/']);
+  }
+
+  loginExitoso(token: string, nombreUsuario: string, nombreUsuario2: string){
+    this.utilitiesService.loading= false;
+    this.utilitiesService.login(token, nombreUsuario, nombreUsuario2)
     this.router.navigate(['/menu']);
   }
 
@@ -66,7 +154,7 @@ export class LoginComponent {
     return this.trigger.asObservable();
   }
 
-  public get nextWebcamObservable(): Observable<boolean|string> {
+  public get nextWebcamObservable(): Observable<boolean | string> {
     return this.nextWebcam.asObservable();
   }
 }

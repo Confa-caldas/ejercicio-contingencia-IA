@@ -10,3 +10,8 @@ export interface Paciente {
   numeroAdmision: string;
   convenio: string;
 }
+
+export interface Token {
+  token?: string;
+  mensaje?: string;
+}
