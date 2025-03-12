@@ -1,0 +1,18 @@
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+webcam {
+  display: block;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}

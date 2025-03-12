@@ -1,0 +1,10 @@
+<div class="container text-center mt-5">
+  <h2>Login con Reconocimiento Facial</h2>
+  <div class="d-flex justify-content-center mt-4">
+    <webcam [height]="320" [width]="480" [trigger]="triggerObservable"
+            [videoOptions]="videoOptions" [allowCameraSwitch]="allowCameraSwitch"
+            [switchCamera]="nextWebcamObservable" (imageCapture)="handleImage($event)"
+            (initError)="handleInitError($event)"></webcam>
+  </div>
+  <button class="btn btn-primary mt-3" (click)="triggerSnapshot()">Capturar Imagen</button>
+</div>
