@@ -174,6 +174,7 @@ export class UtilitiesServiceService {
     if (this.isBrowser()) {
       localStorage.removeItem(this.tokenKey);
       localStorage.removeItem(this.userKey);
+      localStorage.clear();
       this.emitirNombreUsuario('');
     }
   }

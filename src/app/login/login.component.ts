@@ -5,6 +5,7 @@ import { WebcamImage, WebcamInitError, WebcamUtil, WebcamModule } from 'ngx-webc
 import { ReactiveFormsModule, UntypedFormGroup, UntypedFormControl, Validators } from "@angular/forms";
 import { AuthenticationService } from '../services/authentication.service';
 import { UtilitiesServiceService } from '../services/utilities.service';
+import { ModalMessagesComponent } from '../modal-messages/modal-messages.component';
 import { CommonModule } from '@angular/common';
 import $ from 'jquery';
 
@@ -13,10 +14,9 @@ import $ from 'jquery';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   standalone: true,
-  imports: [WebcamModule, ReactiveFormsModule, CommonModule],
+  imports: [WebcamModule, ReactiveFormsModule, CommonModule, ModalMessagesComponent],
 })
 export class LoginComponent {
-  // toggle webcam on/off
   public showWebcam = true;
   public allowCameraSwitch = true;
   public multipleWebcamsAvailable = false;
@@ -25,12 +25,9 @@ export class LoginComponent {
   public errors: WebcamInitError[] = [];
   public nombreUsuario: string = '';
 
-  // latest snapshot
   public webcamImage: WebcamImage | null = null;
 
-  // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
-  // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
   private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
 
   constructor(private router: Router, private authenticationService: AuthenticationService, private utilitiesService: UtilitiesServiceService) { }
@@ -48,27 +45,24 @@ export class LoginComponent {
   }
 
   public showNextWebcam(directionOrDeviceId: boolean | string): void {
-    // true => move forward through devices
-    // false => move backwards through devices
-    // string => move to device with given deviceId
     this.nextWebcam.next(directionOrDeviceId);
   }
 
   handleImage(webcamImage: WebcamImage ): void {
     this.webcamImage = webcamImage;
-    this.validateFace();
+    //this.validateFace();
+    this.router.navigate(['/menu']);
   }
 
   validateFace() {
 
     this.utilitiesService.loading = true;
-    console.log(this.webcamImage);
-
     if (this.webcamImage) {
       this.authenticationService
         .inicioSesionInternoV2(this.webcamImage.imageAsBase64)
         .subscribe(
           (response: any) => {
+            console.log(response);
             if (
               response.doc === 'No se identifico.' ||
               response.doc === 'error'

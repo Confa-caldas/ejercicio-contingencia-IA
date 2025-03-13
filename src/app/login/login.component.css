@@ -1,6 +1,24 @@
 h2 {
   text-align: center;
   margin-bottom: 20px;
+  font-family:  'Bree Regular', 'Helvetica Neue', sans-serif !important;
+}
+
+button.btn-facial {
+  background-color: #fff;
+  border-color: #00A4E7;
+  color: #00A4E7;
+  border-radius: 25px;
+  padding: 5px 20px;
+  outline: 0px;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 21px;
+  text-align: center;
+  width: auto;
+}
+button.btn-facial img {
+  width: 20px;
 }
 
 button {
@@ -10,9 +28,196 @@ button {
   font-size: 16px;
 }
 
+.login-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-image: url('/assets/img/salud.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.login-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+}
+
+.login-box {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.login-box h2 {
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.webcam-container {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+  padding: 10px;
+}
+
+.webcam-wrapper {
+  position: relative;
+  border: 3px solid #00A4E7;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 164, 231, 0.3),
+              0 0 40px rgba(0, 164, 231, 0.2);
+  animation: pulse 2s infinite;
+}
+
 webcam {
+  width: 100% !important;
+  height: auto !important;
   display: block;
-  margin: 0 auto;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+}
+
+webcam video {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 480px;
+  border-radius: 4px;
+}
+
+.btn-primary {
+  padding: 0.5rem 2rem;
+  font-size: 1.1rem;
+}
+
+/* Animación de pulso */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 20px rgba(0, 164, 231, 0.3),
+                0 0 40px rgba(0, 164, 231, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 164, 231, 0.5),
+                0 0 50px rgba(0, 164, 231, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(0, 164, 231, 0.3),
+                0 0 40px rgba(0, 164, 231, 0.2);
+  }
+}
+
+/* Efecto de brillo en los bordes */
+.webcam-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 10px;
+  background: linear-gradient(45deg, #00A4E7, #0056b3, #00A4E7);
+  background-size: 200% 200%;
+  animation: borderGlow 3s ease infinite;
+  z-index: -1;
+}
+
+@keyframes borderGlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Media queries para responsividad */
+@media (max-width: 768px) {
+  .login-content {
+    padding: 15px;
+  }
+
+  .login-box {
+    padding: 1.5rem;
+  }
+
+  .webcam-wrapper {
+    border-width: 2px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-content {
+    padding: 10px;
+  }
+
+  .login-box {
+    padding: 1rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .btn-primary {
+    padding: 0.4rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Para asegurar que la imagen de fondo se ajuste en dispositivos más pequeños */
+@media (orientation: portrait) {
+  .login-container {
+    background-size: auto 100%;
+  }
+}
+
+/* Para pantallas de alta resolución */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .login-container {
+    background-image: url('/assets/img/salud.jpg');
+  }
+}
+
+.welcome-title {
+  color: #00afeb;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+}
+
+.instruction-primary {
+  color: #000000;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.instruction-secondary {
+  color: #6c757d;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
 }

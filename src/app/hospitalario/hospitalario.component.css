@@ -1,0 +1,38 @@
+.table th {
+  background-color: #f8f9fa;
+  vertical-align: middle;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.btn-sm {
+  min-width: 120px;
+}
+
+.btn.active {
+  box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+  transform: translateY(1px);
+}
+
+.form-group {
+  max-width: 300px;
+}
+
+.card-header .btn-sm {
+  min-width: auto;
+}
+
+.btn-info, .btn-primary {
+  min-width: 100px;
+}
+
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

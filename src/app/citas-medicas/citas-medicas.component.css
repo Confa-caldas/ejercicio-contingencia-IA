@@ -19,3 +19,87 @@ th, td {
   padding: 8px;
   text-align: center;
 }
+
+.table-responsive {
+  margin: 15px 0;
+}
+
+.filtro-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filtro-header input {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  vertical-align: top;
+  min-width: 120px;
+  white-space: nowrap;
+}
+
+.table td {
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.btn-sm {
+  min-width: 70px;
+}
+
+/* Estilos para el scroll */
+.table-responsive {
+  scrollbar-width: thin;
+  scrollbar-color: #6c757d #f8f9fa;
+}
+
+.table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: #6c757d;
+  border-radius: 4px;
+}
+
+/* Historia Clínica Container */
+.historia-clinica-container {
+  margin-top: 20px;
+}
+
+.card-header .btn-sm {
+  min-width: auto;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Aseguramos que el contenedor del paginador tenga el mismo ancho que la tabla */
+.pagination-container {
+  background-color: #0088cc;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Asegura que tome todo el ancho disponible */
+  margin: 0; /* Elimina cualquier margen */
+}
+
+/* Si la tabla está dentro de un contenedor responsive, aseguramos que el paginador también lo esté */
+.table-responsive {
+  margin-bottom: 0 !important; /* Elimina el margen inferior */
+  border-bottom: none; /* Elimina el borde inferior si existe */
+}
+
+/* Envolvemos la tabla y el paginador en un contenedor */
+.table-container {
+  border: 1px solid #dee2e6;
+  background-color: white;
+}

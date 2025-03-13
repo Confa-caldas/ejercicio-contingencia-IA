@@ -1,3 +1,148 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
+body, html {
+    background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
+    color: #333;
+    font-family:  'Bree Regular', 'Helvetica Neue', sans-serif !important;
+    height: 100%; 
+    margin: 0; 
+    overflow: hidden; 
+}
+
+.table-responsive {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    margin-top: 20px;
+  }
+  
+  .table {
+    margin-bottom: 0;
+  }
+  
+  .table thead th {
+    background-color: #0088cc !important;
+    color: white !important;
+    font-weight: 500;
+    border-bottom: none;
+    padding: 12px 8px;
+    vertical-align: middle;
+  }
+  
+  .table tbody td {
+    padding: 8px;
+    vertical-align: middle;
+    border: 1px solid #dee2e6;
+  }
+  
+  .table tbody tr:hover {
+    background-color: #f8f9fa;
+  }
+  
+  
+.table-responsive {
+  background-color: white;
+  border: 1px solid #dee2e6;
+  margin-top: 20px;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table thead th {
+  background-color: #0088cc !important;
+  color: white !important;
+  font-weight: 500;
+  border-bottom: none;
+  padding: 12px 8px;
+  vertical-align: middle;
+}
+
+.table tbody td {
+  padding: 8px;
+  vertical-align: middle;
+  border: 1px solid #dee2e6;
+}
+
+.table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.pagination-container {
+  background-color: #0088cc;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination {
+  margin: 0;
+}
+
+.pagination .page-link {
+  color: white;
+  background: transparent;
+  border: none;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: white;
+  color: #0088cc;
+  border-radius: 4px;
+}
+
+.pagination .page-item:not(.active) .page-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.pagination .page-item.disabled .page-link {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bg-info {
+    background-color: #03A9F4 !important;
+  }
+  
+  .bg-primary {
+    background-color: #03A9F4 !important;
+  }
+  
+  .btn-info {
+    background-color: #03A9F4 !important;
+    border-color: #03A9F4 !important;
+  }
+  
+  .btn-primary {
+    background-color: #03A9F4 !important;
+    border-color: #03A9F4 !important;
+  }
+  
+  .btn-info:hover, .btn-primary:hover {
+    background-color: #0288D1 !important;
+    border-color: #0288D1 !important;
+  }
+
+/* Estilo para scrollbars personalizados (opcional) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
