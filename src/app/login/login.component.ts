@@ -50,8 +50,8 @@ export class LoginComponent {
 
   handleImage(webcamImage: WebcamImage ): void {
     this.webcamImage = webcamImage;
-    //this.validateFace();
-    this.router.navigate(['/menu']);
+    this.validateFace();
+    //this.router.navigate(['/menu']);
   }
 
   validateFace() {
@@ -62,7 +62,6 @@ export class LoginComponent {
         .inicioSesionInternoV2(this.webcamImage.imageAsBase64)
         .subscribe(
           (response: any) => {
-            console.log(response);
             if (
               response.doc === 'No se identifico.' ||
               response.doc === 'error'

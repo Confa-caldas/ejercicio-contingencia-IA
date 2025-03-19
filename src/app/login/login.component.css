@@ -1,7 +1,7 @@
 h2 {
   text-align: center;
   margin-bottom: 20px;
-  font-family:  'Bree Regular', 'Helvetica Neue', sans-serif !important;
+  font-family: 'Bree Regular', 'Helvetica Neue', sans-serif !important;
 }
 
 button.btn-facial {
@@ -220,4 +220,6 @@ webcam video {
   font-weight: 700;
   margin-bottom: 1.5rem;
   line-height: 1.5;
+  font-size: 14px;
+  font-style: italic;
 }

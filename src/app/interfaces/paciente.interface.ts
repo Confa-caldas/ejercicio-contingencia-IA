@@ -9,6 +9,9 @@ export interface Paciente {
   numeroCama?: string;
   numeroAdmision?: string;
   convenio?: string;
+  hcAdicional?: string;
+  plan?: string;
+  hcAfiliacion?: string;
 }
 
 export interface Token {

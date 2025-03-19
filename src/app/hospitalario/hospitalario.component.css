@@ -26,6 +26,8 @@
 
 .btn-info, .btn-primary {
   min-width: 100px;
+  color: white;
+  font-weight: bold;
 }
 
 .btn {
@@ -36,3 +38,4 @@
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+

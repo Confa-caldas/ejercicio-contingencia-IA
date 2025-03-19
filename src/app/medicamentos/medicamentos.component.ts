@@ -1,7 +1,10 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Paciente } from '../interfaces/paciente.interface';
-import { Medicamento } from '../interfaces/medicamento.interface';
+import { Medicamento, MedicamentoResponse } from '../interfaces/medicamento.interface';
 import { CommonModule } from '@angular/common';
+import { AuthenticationService } from '../services/authentication.service';
+import { firstValueFrom } from 'rxjs';
+import { UtilitiesServiceService } from '../services/utilities.service';
 
 @Component({
   selector: 'app-medicamentos',
@@ -11,48 +14,56 @@ import { CommonModule } from '@angular/common';
   styleUrl: './medicamentos.component.css'
 })
 export class MedicamentosComponent implements OnChanges {
-  @Input() pacienteId: string | null = null;
+  @Input() paciente: Paciente | null = null;
   medicamentos: Medicamento[] = [];
   pageSize: number = 15;
   currentPage: number = 1;
-  paciente: Paciente = {
-    nombre: '',
-    tipoDocumento: '',
-    numeroDocumento: '',
-    fechaNacimiento: '',
-    sexo: '',
-    codigoSAB: '',
-    codigoPlan: '',
-    numeroCama: '',
-    numeroAdmision: '',
-    convenio: ''
-  };
+  
+  constructor(private authService: AuthenticationService, private utilitiesService: UtilitiesServiceService) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['pacienteId'] && this.pacienteId) {
-      this.cargarMedicamentos(this.pacienteId);
+    if (changes['paciente'] && this.paciente) {
+      this.cargarMedicamentos();
     }
   }
 
-  cargarMedicamentos(id: string) {
-    // Aquí va la lógica para cargar los medicamentos
-    console.log('Cargando medicamentos del paciente:', id);
-    this.paciente = {
-      nombre: 'Juan Pérez',
-      tipoDocumento: 'CC',
-      numeroDocumento: '1234567890',
-      fechaNacimiento: '1990-01-01',
-      sexo: 'Masculino',
-      codigoSAB: 'SAB1',
-      codigoPlan: 'Plan1',
-      numeroCama: '101',
-      numeroAdmision: 'Afiliación 1',
-      convenio: 'Convenio 1'
-    };
-    this.medicamentos = [
-      { nombre: 'Paracetamol', dosis: '100mg', observacion: 'Cada 6 horas', horaAplicacion: '10:00', origen: 'Farmacia', unidadAdministracion: 'ml', viaAdministracion: 'Oral', indicacionEspecial: 'Dolor leve', frecuencia: 'Cada 6 horas', estado: 'Activo' },
-      { nombre: 'Omeprazol', dosis: '20mg', observacion: 'Cada 12 horas', horaAplicacion: '12:00', origen: 'Farmacia', unidadAdministracion: 'ml', viaAdministracion: 'Oral', indicacionEspecial: 'Acidez estomacal', frecuencia: 'Cada 12 horas', estado: 'Activo' }
-    ];
+  async cargarMedicamentos() {
+    this.utilitiesService.loading = true;
+    if (!this.paciente) return;
+  
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        this.utilitiesService.loading = false;
+        this.utilitiesService.showError('Error al cargar medicamentos:', 'No se encontró el token');
+        $('.btn-modal-error').click();
+        return;
+      }
+  
+      const response = await firstValueFrom(
+        this.authService.obtenerMedicamentos(
+          token,
+          this.paciente.numeroAdmision || '',
+          this.paciente.codigoSAB || ''
+        )
+      );
+  
+      // Manejar la respuesta según la estructura correcta
+      const medicamentosResponse = response as MedicamentoResponse;
+      
+      // Actualizar los medicamentos con la lista del response
+      if (medicamentosResponse.listMedicamentos && Array.isArray(medicamentosResponse.listMedicamentos)) {
+        this.medicamentos = medicamentosResponse.listMedicamentos;
+      } else {
+        this.medicamentos = [];
+      }
+      this.utilitiesService.loading = false;
+    } catch (error) {
+      this.utilitiesService.loading = false;
+      this.utilitiesService.showError('Error al cargar medicamentos:', error as string);
+      $('.btn-modal-error').click();
+      this.medicamentos = [];
+    }
   }
 
   get visibleItems() {

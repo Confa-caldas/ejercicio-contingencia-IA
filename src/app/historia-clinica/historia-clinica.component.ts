@@ -1,6 +1,10 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HistoriaClinica } from '../interfaces/medicamento.interface';
+import { HistoriaClinica, DetalleHistoriaClinica } from '../interfaces/medicamento.interface';
+import { AuthenticationService } from '../services/authentication.service';
+import { UtilitiesServiceService } from '../services/utilities.service';
+import { Paciente } from '../interfaces/paciente.interface';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-historia-clinica',
@@ -10,44 +14,107 @@ import { HistoriaClinica } from '../interfaces/medicamento.interface';
   styleUrl: './historia-clinica.component.css'
 })
 export class HistoriaClinicaComponent implements OnChanges {
-  @Input() pacienteId: string | null = null;
+  @Input() paciente: Paciente | null = null;
+  @Input() origen: 'hospitalario' | 'citas' = 'hospitalario'; 
   historias: HistoriaClinica[] = [];
   historiaSeleccionada: HistoriaClinica | null = null;
+  detalleHistoria: DetalleHistoriaClinica | null = null;
   pageSize: number = 15;
   currentPage: number = 1;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private authService: AuthenticationService, private utilitiesService: UtilitiesServiceService) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['pacienteId'] && this.pacienteId) {
-      this.cargarHistoriaClinica(this.pacienteId);
+    if (changes['paciente'] && this.paciente) {
+      this.cargarHistoriasClinicas();
     }
   }
 
-  cargarHistoriaClinica(id: string) {
-    // Aquí va la lógica para cargar la historia clínica
-    console.log('Cargando historia clínica del paciente:', id);
-    this.historias = [
-      {
-        id: 1,
-        fecha: '2024-03-20 09:30',
-        medico: 'Dr. Juan Pérez',
-        especialidad: 'Medicina General',
-        plantilla: 'Consulta General',
-        atencion: 'Ambulatoria',
-        detalles: {
-          motivo: 'Dolor de cabeza y fiebre',
-          diagnostico: 'Migraña',
-          tratamiento: 'Acetaminofén 500mg cada 8 horas',
-          observaciones: 'Paciente presenta síntomas desde hace 2 días'
-        }
-      },
-      // ... más historias
-    ];
+  async cargarHistoriasClinicas() {
+    this.utilitiesService.loading = true;
+    if (!this.paciente){
+      this.utilitiesService.loading = false;
+      this.utilitiesService.showError('Error al cargar historias clínicas:', 'No se encontró el paciente');
+      $('.btn-modal-error').click();
+      return;
+    } 
+    
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        this.utilitiesService.loading = false;
+        this.utilitiesService.showError('Error al cargar historias clínicas:', 'No se encontró el token');
+        $('.btn-modal-error').click();
+        return;
+      }
+      if (this.origen === 'citas') {
+        const response = await firstValueFrom(
+          this.authService.obtenerHCPacienteCitas(
+            this.paciente.numeroDocumento || '',
+            token,
+            this.paciente.hcAdicional || ''
+          )
+        );
+
+        this.historias = Array.isArray(response) ? response : [response];
+
+      } else {
+        const response = await firstValueFrom(
+          this.authService.obtenerHCPaciente(
+            this.paciente.numeroDocumento || '',
+            token,
+            this.paciente.hcAdicional || ''
+          )
+        );
+        console.log(response);
+        this.historias = Array.isArray(response) ? response : [response];
+      }
+      this.utilitiesService.loading = false;
+      this.currentPage = 1;
+      this.utilitiesService.loading = false;
+    } catch (error) {
+      this.utilitiesService.loading = false;
+      this.utilitiesService.showError('Error al cargar historias clínicas:', error as string);
+      $('.btn-modal-error').click();
+      this.historias = [];
+    }
   }
 
-  verDetalle(historia: HistoriaClinica) {
-    this.historiaSeleccionada = this.historiaSeleccionada?.id === historia.id ? null : historia;
+  async verDetalle(historia: any) {
+    this.utilitiesService.loading = true;
+    if (this.historiaSeleccionada?.consecutivo === historia.consecutivo) {
+      this.historiaSeleccionada = null;
+      this.detalleHistoria = null;
+      this.utilitiesService.loading = false;
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        this.utilitiesService.loading = false;
+        this.utilitiesService.showError('Error al cargar el detalle:', 'No se encontró el token');
+        $('.btn-modal-error').click();
+        return;
+      }
+
+      this.historiaSeleccionada = historia;
+      const response = await firstValueFrom(
+        this.origen === 'citas'
+          ? this.authService.obtenerDetalleHCCitas(historia.consecutivo, token)
+          : this.authService.obtenerDetalleHC(historia.consecutivo, token)
+      );
+
+      const detalleResponse = Array.isArray(response) ? response[0] : response;
+      this.detalleHistoria = detalleResponse;
+      this.utilitiesService.loading = false;
+    } catch (error) {
+      this.utilitiesService.loading = false;
+      this.utilitiesService.showError('Error al cargar el detalle:', error as string);
+      $('.btn-modal-error').click();
+      this.historiaSeleccionada = null;
+      this.detalleHistoria = null;
+    }
   }
 
   get visibleItems() {
@@ -91,5 +158,9 @@ export class HistoriaClinicaComponent implements OnChanges {
     if (this.currentPage > 1) {
       this.currentPage--;
     }
+  }
+
+  private formatearFecha(fecha: string): string {
+    return fecha.replace(/\//g, '-');
   }
 }

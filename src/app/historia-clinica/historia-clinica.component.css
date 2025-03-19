@@ -12,20 +12,6 @@ p {
   overflow-x: auto;
 }
 
-.table {
-  margin-bottom: 0;
-  white-space: nowrap;
-}
-
-.table th {
-  background-color: #f8f9fa;
-  vertical-align: middle;
-}
-
-.table td {
-  vertical-align: middle;
-}
-
 .btn-sm {
   min-width: 100px;
 }
@@ -36,7 +22,7 @@ p {
 
 .detalle-historia {
   padding: 0 !important;
-  background-color: #f8f9fa;
+  width: 100%;
 }
 
 .card {
@@ -46,6 +32,11 @@ p {
 }
 
 .card-header {
+  width: 100%;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background-color: #0088cc;
+  color: white;
   border-radius: 0;
 }
 
@@ -71,45 +62,192 @@ p {
 .detalle-item p {
   margin-bottom: 0;
 }
+
 /* Responsive styles */
 @media screen and (max-width: 992px) {
-  .table {
-    font-size: 0.9rem;
-  }
-  
+    
   .detalle-historia .card-body {
     padding: 1rem;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .table thead {
-    display: none;
-  }
-
-  .table tbody tr {
-    display: block;
-    margin-bottom: 1rem;
-    border: 1px solid #dee2e6;
-  }
-
-  .table tbody td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem;
-    border: none;
-    border-bottom: 1px solid #dee2e6;
-  }
-
-  .table tbody td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    margin-right: 1rem;
-  }
+  
 
   .detalle-historia td {
     display: block !important;
+  }
+}
+
+/* Estilos para el detalle de la historia clínica */
+.detail-info-card {
+  width: 100%;
+  margin: 0;
+  background-color: #f8f9fa;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.detail-info-container {
+  width: 100%;
+  padding: 1.5rem;
+  margin: 0;
+}
+
+/* Asegurar que la fila ocupe todo el ancho */
+.detail-info-container .row {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Ajustes para las columnas */
+.detail-info-container .col-md-6 {
+  padding: 0.75rem;
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+/* Ajustes para los grupos de información */
+.info-group {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.info-group label {
+  display: block;
+  color: #0088cc;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.info-group .info-value {
+  width: 100%;
+  background-color: white;
+  padding: 0.5rem;
+  border: 1px solid #dee2e6;
+}
+
+/* Botón de cerrar */
+.close-button {
+  color: white;
+  background: transparent;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  font-size: 1.1rem;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.close-button:hover {
+  opacity: 1;
+}
+
+/* Ajustes para el contenedor del detalle */
+td.detalle-historia {
+  background-color: white !important;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+  .detail-info-container .row {
+    margin: 0;
+  }
+  
+  .detail-info-container .col-md-6 {
+    padding: 0.5rem;
+  }
+}
+
+/* Estilos para la tabla principal */
+.table thead th {
+  background-color: #0088cc;
+  color: white;
+  font-weight: 500;
+}
+
+.btn-info {
+  background-color: #0088cc;
+  border-color: #0088cc;
+}
+
+.btn-info:hover {
+  background-color: #006699;
+  border-color: #006699;
+}
+
+.alert {
+  margin: 2rem;
+  padding: 1rem;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  color: #0088cc;
+}
+
+.alert i {
+  margin-right: 8px;
+}
+
+/* Asegurar que el colspan ocupe todo el ancho */
+td[colspan="6"] {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Ajuste para el td con colspan */
+td[colspan="5"] {
+  width: 100%;
+  padding: 0 !important;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.table {
+  margin-bottom: 0;
+  background-color: white;
+}
+
+.table th, 
+.table td {
+  padding: 0.75rem;
+  vertical-align: middle;
+  border: 1px solid #dee2e6;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+.table td div {
+  word-break: normal;
+  white-space: normal;
+}
+
+/* Ajustes para dispositivos móviles */
+@media screen and (max-width: 768px) {
+  .table th, 
+  .table td {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
   }
 }
 

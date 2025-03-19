@@ -4,7 +4,7 @@
 body, html {
     background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec);
     color: #333;
-    font-family:  'Bree Regular', 'Helvetica Neue', sans-serif !important;
+    font-family: 'Bree Regular', 'Helvetica Neue', sans-serif !important;
     height: 100%; 
     margin: 0; 
     overflow: hidden; 
@@ -145,4 +145,523 @@ body, html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+@font-face {
+  font-family: 'Bree Regular';
+  src: url('/assets/fonts/BreeSerif-Regular.ttf') format('ttf');
+}
+
+* {
+  font-family: 'Bree Regular', 'Helvetica Neue', sans-serif !important;
+}
+
+app-historia-clinica,
+app-citas-medicas,
+app-medicamentos,
+.table,
+.form-control,
+.btn {
+  font-family: 'Bree Regular', 'Helvetica Neue', sans-serif !important;
+}
+
+/* Para asegurar que los elementos dentro de las tablas también tengan la fuente */
+.table th,
+.table td {
+  font-family: 'Bree Regular', 'Helvetica Neue', sans-serif !important;
+}
+
+/* Si necesitas ajustar pesos específicos */
+.font-light {
+  font-weight: 300;
+}
+
+.font-regular {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+/* Estilos comunes para todas las tablas */
+.table {
+  font-size: 0.85rem;
+  margin-bottom: 0;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  padding: 0.5rem;
+  vertical-align: middle;
+}
+
+.table td {
+  padding: 0.5rem;
+  vertical-align: middle;
+}
+
+.table td div {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px; /* Ajustar según necesidad */
+}
+
+/* Estilos para el contenedor de la tabla */
+.table-container {
+  margin: 1rem 0;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+/* Estilos unificados para el paginador */
+.pagination-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.pagination {
+  display: flex;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pagination .page-item .page-link {
+  padding: 6px 12px;
+  min-width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: none;
+  color: #666;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.pagination .page-item:not(.active) .page-link:hover {
+  background-color: #e9ecef;
+  color: #0088cc;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #0088cc;
+  color: white;
+  font-weight: 500;
+}
+
+.pagination .page-item.disabled .page-link {
+  background-color: #f8f9fa;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Estilos específicos para los botones de navegación */
+.pagination .page-item:first-child .page-link,
+.pagination .page-item:last-child .page-link {
+  font-size: 1.2rem;
+}
+
+/* Ajustes para los filtros en el encabezado */
+.filtro-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.column-label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-input {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  height: auto;
+}
+
+.search-icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 0.85rem;
+}
+
+/* Estilos para botones dentro de la tabla */
+.table .btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.table .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Estilos para todas las tablas */
+.table {
+  width: 100% !important;
+  table-layout: fixed; /* Esto fuerza a que las columnas mantengan su ancho */
+}
+
+/* Estilos para las celdas de la tabla */
+.table th,
+.table td {
+  padding: 0.5rem;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Contenedor para el texto dentro de las celdas */
+.table td div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+/* Ancho específico para cada tipo de columna */
+.table th:nth-child(1), /* Fecha */
+.table td:nth-child(1) {
+  width: 100px;
+}
+
+.table th:nth-child(2), /* Hora/Médico */
+.table td:nth-child(2) {
+  width: 80px;
+}
+
+.table th:nth-child(3), /* Tipo/Especialidad */
+.table td:nth-child(3) {
+  width: 120px;
+}
+
+.table th:nth-child(4), /* Servicio/Descripción */
+.table td:nth-child(4) {
+  width: 200px;
+}
+
+.table th:nth-child(5), /* Cédula */
+.table td:nth-child(5) {
+  width: 100px;
+}
+
+.table th:nth-child(6), /* Nombre */
+.table td:nth-child(6) {
+  width: 200px;
+}
+
+.table th:nth-child(7), /* Cod. Plan */
+.table td:nth-child(7) {
+  width: 100px;
+}
+
+.table th:nth-child(8), /* Legalización */
+.table td:nth-child(8) {
+  width: 120px;
+}
+
+.table th:nth-child(9), /* Pago */
+.table td:nth-child(9) {
+  width: 80px;
+}
+
+.table th:nth-child(10), /* Prestamo */
+.table td:nth-child(10) {
+  width: 80px;
+}
+
+/* Columna de acciones (botones) */
+.table th:last-child,
+.table td:last-child {
+  width: 100px;
+  text-align: center;
+}
+
+/* Tooltip para mostrar el texto completo al hacer hover */
+.table td div[title] {
+  cursor: help;
+}
+
+/* Asegurar que los botones en las tablas no se deformen */
+.table .btn {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  .table {
+    min-width: 800px; /* Asegura un ancho mínimo en móviles */
+  }
+}
+
+/* Estilos específicos para la tabla de hospitalario */
+.table-container .table {
+  width: 100% !important;
+  table-layout: fixed;
+}
+
+/* Ajustes de columnas específicas para hospitalario */
+.table-container .table th:nth-child(1), /* Nombre */
+.table-container .table td:nth-child(1) {
+  width: 35%; /* Más espacio para el nombre */
+}
+
+.table-container .table th:nth-child(2), /* Afiliación - Adicional */
+.table-container .table td:nth-child(2) {
+  width: 25%; /* Mantener el ancho actual */
+}
+
+.table-container .table th:nth-child(3), /* Cama */
+.table-container .table td:nth-child(3) {
+  width: 10%; /* Reducir el ancho */
+}
+
+.table-container .table th:nth-child(4), /* Ver HC */
+.table-container .table td:nth-child(4) {
+  width: 15%; /* Reducir el ancho */
+  text-align: center;
+}
+
+.table-container .table th:nth-child(5), /* Ver Medicamentos */
+.table-container .table td:nth-child(5) {
+  width: 15%; /* Reducir el ancho */
+  text-align: center;
+}
+
+/* Asegurar que el texto se ajuste correctamente */
+.table-container .table td div {
+  word-wrap: break-word;
+  white-space: normal;
+  line-height: 1.2;
+}
+
+/* Ajustar el tamaño de los botones */
+.table-container .table .btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  width: auto;
+  min-width: 100px; /* Ancho mínimo para los botones */
+}
+
+/* Estilos para la tabla de historia clínica sin importar dónde se muestre */
+.historia-clinica .table,
+.card-body .historia-clinica .table {
+  width: 100% !important;
+  table-layout: fixed;
+}
+
+/* Ajustes de columnas para historia clínica */
+.historia-clinica .table th:nth-child(1),
+.card-body .historia-clinica .table th:nth-child(1),
+.historia-clinica .table td:nth-child(1),
+.card-body .historia-clinica .table td:nth-child(1) {
+  width: 10%; /* Fecha */
+}
+
+.historia-clinica .table th:nth-child(2),
+.card-body .historia-clinica .table th:nth-child(2),
+.historia-clinica .table td:nth-child(2),
+.card-body .historia-clinica .table td:nth-child(2) {
+  width: 20%; /* Médico */
+}
+
+.historia-clinica .table th:nth-child(3),
+.card-body .historia-clinica .table th:nth-child(3),
+.historia-clinica .table td:nth-child(3),
+.card-body .historia-clinica .table td:nth-child(3) {
+  width: 20%; /* Especialidad */
+}
+
+.historia-clinica .table th:nth-child(4),
+.card-body .historia-clinica .table th:nth-child(4),
+.historia-clinica .table td:nth-child(4),
+.card-body .historia-clinica .table td:nth-child(4) {
+  width: 35%; /* Descripción Diagnóstico */
+}
+
+.historia-clinica .table th:nth-child(5),
+.card-body .historia-clinica .table th:nth-child(5),
+.historia-clinica .table td:nth-child(5),
+.card-body .historia-clinica .table td:nth-child(5) {
+  width: 15%; /* Ver Detalle */
+  text-align: center;
+}
+
+/* Ajustes para el botón Ver Detalle */
+.historia-clinica .table .btn-sm,
+.card-body .historia-clinica .table .btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  width: auto !important; /* Sobrescribir el width inline */
+  min-width: 90px;
+}
+
+/* Asegurar que el contenedor de la tabla sea responsive */
+.historia-clinica .table-responsive,
+.card-body .historia-clinica .table-responsive {
+  overflow-x: auto;
+  width: 100%;
+}
+
+/* Estilos para las celdas */
+.historia-clinica .table td div,
+.card-body .historia-clinica .table td div {
+  word-wrap: break-word;
+  white-space: normal;
+  line-height: 1.2;
+}
+
+/* Estilos específicos para la tabla de medicamentos */
+.medications-section .table {
+  width: 100% !important;
+  table-layout: fixed;
+}
+
+/* Ajustes de columnas específicas para medicamentos */
+.medications-section .table th:nth-child(1), /* Medicamento */
+.medications-section .table td:nth-child(1) {
+  width: 22%; /* Aumentar ancho de medicamento */
+}
+
+.medications-section .table th:nth-child(2), /* Dosis */
+.medications-section .table td:nth-child(2) {
+  width: 5%; /* Reducir ancho de dosis */
+}
+
+.medications-section .table th:nth-child(3), /* Unidad */
+.medications-section .table td:nth-child(3) {
+  width: 12%; /* Aumentar un poco el ancho de unidad */
+}
+
+.medications-section .table th:nth-child(4), /* Vía */
+.medications-section .table td:nth-child(4) {
+  width: 10%;
+}
+
+.medications-section .table th:nth-child(5), /* Indicación */
+.medications-section .table td:nth-child(5) {
+  width: 15%;
+}
+
+.medications-section .table th:nth-child(6), /* Frecuencia */
+.medications-section .table td:nth-child(6) {
+  width: 8%; /* Reducir ancho de frecuencia */
+}
+
+.medications-section .table th:nth-child(7), /* Observación */
+.medications-section .table td:nth-child(7) {
+  width: 12%;
+}
+
+.medications-section .table th:nth-child(8), /* Origen */
+.medications-section .table td:nth-child(8) {
+  width: 9%;
+}
+
+.medications-section .table th:nth-child(9), /* Fecha */
+.medications-section .table td:nth-child(9) {
+  width: 8%;
+}
+
+/* Estilos específicos para la tabla de citas médicas */
+.citas-medicas .table {
+  width: 100% !important;
+  table-layout: fixed;
+}
+
+/* Ajustes de columnas específicas para citas médicas */
+.citas-medicas .table th:nth-child(1), /* Fecha */
+.citas-medicas .table td:nth-child(1) {
+  width: 8%;
+}
+
+.citas-medicas .table th:nth-child(2), /* Hora */
+.citas-medicas .table td:nth-child(2) {
+  width: 6%;
+}
+
+.citas-medicas .table th:nth-child(3), /* Tipo Cita */
+.citas-medicas .table td:nth-child(3) {
+  width: 8%;
+}
+
+.citas-medicas .table th:nth-child(4), /* Servicio */
+.citas-medicas .table td:nth-child(4) {
+  width: 20%; /* Aumentado */
+}
+
+.citas-medicas .table th:nth-child(5), /* Cédula */
+.citas-medicas .table td:nth-child(5) {
+  width: 8%;
+}
+
+.citas-medicas .table th:nth-child(6), /* Nombre */
+.citas-medicas .table td:nth-child(6) {
+  width: 18%; /* Aumentado */
+}
+
+.citas-medicas .table th:nth-child(7), /* Cod. Plan */
+.citas-medicas .table td:nth-child(7) {
+  width: 8%;
+}
+
+.citas-medicas .table th:nth-child(8), /* Legalización */
+.citas-medicas .table td:nth-child(8) {
+  width: 10%;
+}
+
+.citas-medicas .table th:nth-child(9), /* Pago */
+.citas-medicas .table td:nth-child(9) {
+  width: 6%;
+}
+
+.citas-medicas .table th:nth-child(10), /* Prestamo */
+.citas-medicas .table td:nth-child(10) {
+  width: 6%;
+}
+
+.citas-medicas .table th:nth-child(11), /* Ver HC */
+.citas-medicas .table td:nth-child(11) {
+  width: 8%;
+  text-align: center;
+}
+
+/* Ajuste para el botón Ver HC */
+.citas-medicas .table .btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  width: auto;
+  min-width: 70px;
 }

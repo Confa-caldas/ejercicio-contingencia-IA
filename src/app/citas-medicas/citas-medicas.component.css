@@ -81,25 +81,323 @@ th, td {
   padding: 0.25rem 0.5rem;
 }
 
-/* Aseguramos que el contenedor del paginador tenga el mismo ancho que la tabla */
+/* Ajustes para el contenedor del paginador */
 .pagination-container {
-  background-color: #0088cc;
-  padding: 8px;
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 100%; /* Asegura que tome todo el ancho disponible */
-  margin: 0; /* Elimina cualquier margen */
 }
 
-/* Si la tabla está dentro de un contenedor responsive, aseguramos que el paginador también lo esté */
-.table-responsive {
-  margin-bottom: 0 !important; /* Elimina el margen inferior */
-  border-bottom: none; /* Elimina el borde inferior si existe */
+.pagination-container nav {
+  width: auto;
+  max-width: 100%;
 }
 
-/* Envolvemos la tabla y el paginador en un contenedor */
-.table-container {
-  border: 1px solid #dee2e6;
+/* Ajustes para la paginación */
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem;
+  margin: 0;
+  background: transparent;
+}
+
+.pagination .page-item {
+  margin: 0;
+}
+
+.pagination .page-item .page-link {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  min-width: 32px;
+  text-align: center;
   background-color: white;
+  color: #0088cc;
+  border: 1px solid #dee2e6;
+  cursor: pointer;
+}
+
+.pagination .page-item:not(.disabled) .page-link:hover {
+  background-color: #e9ecef;
+  color: #0056b3;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #0088cc;
+  border-color: #0088cc;
+  color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Asegurar que los botones de navegación sean claramente visibles */
+.pagination .page-item:not(.active) .page-link {
+  background-color: white;
+  color: #0088cc;
+}
+
+/* Ajustes responsivos para el paginador */
+@media (max-width: 768px) {
+  .pagination {
+    gap: 0.15rem;
+  }
+
+  .pagination .page-link {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+    min-width: 28px;
+  }
+}
+
+/* Asegurarse de que el contenedor de la tabla mantenga el scroll */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-responsive {
+  min-width: 100%;
+  margin-bottom: 0; /* Eliminar margen inferior de la tabla */
+}
+
+/* Estilos para el encabezado de la tabla */
+.table thead th {
+  background-color: #0088cc;
+  color: white;
+  padding: 1rem;
+  vertical-align: top;
+}
+
+/* Estilos para el contenedor del filtro */
+.filtro-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.column-label {
+  font-weight: bold;
+  color: white;
+  margin-bottom: 4px;
+}
+
+/* Contenedor del input de búsqueda */
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Ícono de búsqueda */
+.search-icon {
+  position: absolute;
+  left: 10px;
+  color: #0088cc;
+  font-size: 0.9rem;
+  z-index: 2;
+}
+
+/* Input de búsqueda */
+.search-input {
+  padding-left: 32px;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #0088cc;
+  box-shadow: 0 4px 6px rgba(0, 136, 204, 0.1);
+}
+
+.search-input::placeholder {
+  color: #adb5bd;
+  font-size: 0.85rem;
+}
+
+/* Hover effect */
+.search-input:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .filtro-header {
+    gap: 4px;
+  }
+
+  .search-input {
+    font-size: 0.85rem;
+  }
+}
+
+/* Estilos para la tabla */
+.table-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+.table {
+  font-size: 0.85rem;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+/* Ajustar el padding de las celdas */
+.table td, 
+.table th {
+  padding: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+/* Ajustes específicos por columna */
+.table td:nth-child(1),
+.table th:nth-child(1) {
+  max-width: 90px;
+}
+
+.table td:nth-child(2),
+.table th:nth-child(2) {
+  max-width: 70px;
+}
+
+.table td:nth-child(3),
+.table th:nth-child(3) {
+  max-width: 80px;
+}
+
+.table td:nth-child(4),
+.table th:nth-child(4) {
+  max-width: 200px;
+}
+
+.table td:nth-child(5),
+.table th:nth-child(5) {
+  max-width: 90px;
+}
+
+.table td:nth-child(6),
+.table th:nth-child(6) {
+  max-width: 180px;
+}
+
+.table td:nth-child(7),
+.table th:nth-child(7) {
+  max-width: 80px;
+}
+
+.table td:nth-child(8),
+.table th:nth-child(8) {
+  max-width: 100px;
+}
+
+.table td:nth-child(9),
+.table th:nth-child(9) {
+  max-width: 70px;
+}
+
+.table td:nth-child(10),
+.table th:nth-child(10) {
+  max-width: 80px;
+}
+
+/* Ajustes para el contenedor de la tabla */
+.table-responsive {
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+/* Estilos para el tooltip al hacer hover */
+.table td {
+  position: relative;
+}
+
+.table td:hover {
+  overflow: visible;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* Ajustes para los botones */
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+/* Ajustes para los filtros */
+.filtro-header {
+  font-size: 0.85rem;
+}
+
+.search-input {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem 0.25rem 2rem;
+  height: auto;
+}
+
+.search-icon {
+  font-size: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Ajustes responsivos */
+@media (max-width: 1200px) {
+  .table {
+    font-size: 0.8rem;
+  }
+  
+  .table td, 
+  .table th {
+    padding: 0.4rem;
+  }
+}
+
+/* Tooltip para texto truncado */
+.table td div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table td div:hover {
+  position: relative;
+}
+
+.table td div:hover::after {
+  content: attr(title);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background: white;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  z-index: 1000;
+  white-space: normal;
+  word-break: break-word;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  max-width: 300px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

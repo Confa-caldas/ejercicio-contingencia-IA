@@ -1,139 +1,151 @@
-<div class="container mt-4">
-  <div>
-    <h2 style="color: #0088cc; font-weight: bold">Información del Paciente</h2>
-    <form>
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="nombrePaciente">Nombre del Paciente</label>
-          <input type="text" class="form-control" id="nombrePaciente" placeholder="Nombre del Paciente"
-            [value]="paciente.nombre" readonly>
-        </div>
-        <div class="form-group col-md-3">
-          <label for="tipoDocumento">Tipo de Documento</label>
-          <select id="tipoDocumento" class="form-control" [value]="paciente.tipoDocumento" disabled>
-            <option>CC</option>
-            <option>TI</option>
-            <option>CE</option>
-          </select>
-        </div>
-        <div class="form-group col-md-3">
-          <label for="numeroDocumento">Número de Documento</label>
-          <input type="text" class="form-control" id="numeroDocumento" placeholder="Número de Documento"
-            [value]="paciente.numeroDocumento" readonly>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-4">
-          <label for="fechaNacimiento">Fecha de Nacimiento</label>
-          <input type="date" class="form-control" id="fechaNacimiento" [value]="paciente.fechaNacimiento" readonly>
-        </div>
-        <div class="form-group col-md-4">
-          <label for="sexo">Sexo</label>
-          <select id="sexo" class="form-control" [value]="paciente.sexo" disabled>
-            <option>Masculino</option>
-            <option>Femenino</option>
-          </select>
-        </div>
-        <div class="form-group col-md-4">
-          <label for="codigoSAB">Código SAB</label>
-          <input type="text" class="form-control" id="codigoSAB" placeholder="Código SAB" [value]="paciente.codigoSAB"
-            readonly>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-4">
-          <label for="codigoPlan">Código Plan</label>
-          <input type="text" class="form-control" id="codigoPlan" placeholder="Código Plan"
-            [value]="paciente.codigoPlan" readonly>
-        </div>
-        <div class="form-group col-md-4">
-          <label for="numeroCama">Número de Cama</label>
-          <input type="text" class="form-control" id="numeroCama" placeholder="Número de Cama"
-            [value]="paciente.numeroCama" readonly>
-        </div>
-        <div class="form-group col-md-4">
-          <label for="numeroAdmision">Número de Admisión</label>
-          <input type="text" class="form-control" id="numeroAdmision" placeholder="Número de Admisión"
-            [value]="paciente.numeroAdmision" readonly>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="convenio">Convenio</label>
-        <input type="text" class="form-control" id="convenio" placeholder="Convenio" [value]="paciente.convenio"
-          readonly>
-      </div>
-    </form>
+<div class="container-fluid">
+  <div class="table-container">
+    <div class="patient-info-card">
+      <h2 class="section-title">Información del Paciente</h2>
+      <div class="patient-info-container">
+        <div class="row g-3">
+          <!-- Primera fila -->
+          <div class="col-md-4">
+            <div class="info-group">
+              <label>Nombre del Paciente</label>
+              <div class="info-value" style="text-wrap: wrap">{{paciente?.nombre || '-'}}</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="info-group">
+              <label>Tipo de Documento</label>
+              <div class="info-value" style="text-wrap: wrap">{{paciente?.tipoDocumento || '-'}}</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="info-group">
+              <label>Número de Documento</label>
+              <div class="info-value" style="text-wrap: wrap">{{paciente?.numeroDocumento || '-'}}</div>
+            </div>
+          </div>
 
-    <h2 class="mt-5" style="color: #0088cc; font-weight: bold">Medicamentos</h2>
-    <div class="medicamentos-container">
-      <div class="table-responsive">
-        <table class="table table-striped table-bordered">
-          <thead>
-            <tr>
-              <th>Medicamento</th>
-              <th>Dosis</th>
-              <th>Observación</th>
-              <th>Hora de Aplicación</th>
-              <th>Origen</th>
-              <th>Unidad de Administración</th>
-              <th>Vía Administración</th>
-              <th>Indicación Especial</th>
-              <th>Frecuencia</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (medicamento of visibleItems; track medicamento.nombre; let i = $index) {
-            <tr>
-              <td>{{ medicamento.nombre }}</td>
-              <td>{{ medicamento.dosis }}</td>
-              <td>{{ medicamento.observacion }}</td>
-              <td>{{ medicamento.horaAplicacion }}</td>
-              <td>{{ medicamento.origen }}</td>
-              <td>{{ medicamento.unidadAdministracion }}</td>
-              <td>{{ medicamento.viaAdministracion }}</td>
-              <td>{{ medicamento.indicacionEspecial }}</td>
-              <td>{{ medicamento.frecuencia }}</td>
-              <td>{{ medicamento.estado }}</td>
-            </tr>
-            }
-          </tbody>
-        </table>
-        <!-- Solo mostrar el paginador si hay más de una página -->
-        @if (totalPages > 1) {
-        <div class="pagination-container">
-          <nav aria-label="Page navigation">
-            <ul class="pagination">
-              <li class="page-item" [class.disabled]="currentPage === 1">
-                <a class="page-link" (click)="firstPage()" aria-label="First">
-                  «
-                </a>
-              </li>
-              <li class="page-item" [class.disabled]="currentPage === 1">
-                <a class="page-link" (click)="previousPage()" aria-label="Previous">
-                  < </a>
-              </li>
+          <!-- Segunda fila -->
+          <div class="col-md-4">
+            <div class="info-group">
+              <label>Fecha de Nacimiento</label>
+              <div class="info-value" style="text-wrap: wrap">{{paciente?.fechaNacimiento || '-'}}</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="info-group">
+              <label>Sexo</label>
+              <div class="info-value" style="text-wrap: wrap">{{paciente?.sexo || '-'}}</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="info-group">
+              <label>Código SAB</label>
+              <div class="info-value" style="text-wrap: wrap">{{paciente?.codigoSAB || '-'}}</div>
+            </div>
+          </div>
 
-              @for (page of getPages(); track page) {
-              <li class="page-item" [class.active]="currentPage === page">
-                <a class="page-link" (click)="changePage(page)">{{page}}</a>
-              </li>
+          <!-- Tercera fila -->
+          <div class="col-md-4">
+            <div class="info-group">
+              <label>Código Plan</label>
+              <div class="info-value" style="text-wrap: wrap">{{paciente?.codigoPlan || '-'}}</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="info-group">
+              <label>Número de Cama</label>
+              <div class="info-value" style="text-wrap: wrap">{{paciente?.numeroCama || '-'}}</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="info-group">
+              <label>Número de Admisión</label>
+              <div class="info-value" style="text-wrap: wrap">{{paciente?.numeroAdmision || '-'}}</div>
+            </div>
+          </div>
+
+          <!-- Cuarta fila -->
+          <div class="col-12">
+            <div class="info-group">
+              <label>Convenio</label>
+              <div class="info-value" style="text-wrap: wrap">{{paciente?.convenio || '-'}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de Medicamentos (mantener como está) -->
+    <div class="medications-section mt-4">
+      <h2 class="section-title">Medicamentos</h2>
+      <div class="medicamentos-container">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Medicamento</th>
+                <th>Dosis</th>
+                <th>Unidad</th>
+                <th>Vía</th>
+                <th>Indicación</th>
+                <th>Frecuencia</th>
+                <th>Observación</th>
+                <th>Origen</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (medicamento of visibleItems; track medicamento.nombreMedicamento) {
+              <tr>
+                <td><div style="text-wrap: wrap">{{ medicamento.nombreMedicamento }}</div></td>
+                <td><div style="text-wrap: wrap">{{ medicamento.dosis }}</div></td>
+                <td><div style="text-wrap: wrap">{{ medicamento.unidadAdministracion }}</div></td>
+                <td><div style="text-wrap: wrap">{{ medicamento.viaAdministracion }}</div></td>
+                <td><div style="text-wrap: wrap">{{ medicamento.indicacionEspecial }}</div></td>
+                <td><div style="text-wrap: wrap">{{ medicamento.frecuencia }}</div></td>
+                <td><div style="text-wrap: wrap">{{ medicamento.observacionEnfermeria }}</div></td>
+                <td><div style="text-wrap: wrap">{{ medicamento.origenMedicamento }}</div></td>
+                <td><div style="text-wrap: wrap">{{ medicamento.campo_01 }}</div></td> 
+              </tr>
               }
+            </tbody>
+          </table>
+          <!-- Solo mostrar el paginador si hay más de una página -->
+          @if (totalPages > 1) {
+          <div class="pagination-container">
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="firstPage()" aria-label="First">
+                    «
+                  </a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="previousPage()" aria-label="Previous">
+                    < </a>
+                </li>
 
-              <li class="page-item" [class.disabled]="currentPage === totalPages">
-                <a class="page-link" (click)="nextPage()" aria-label="Next">
-                  >
-                </a>
-              </li>
-              <li class="page-item" [class.disabled]="currentPage === totalPages">
-                <a class="page-link" (click)="lastPage()" aria-label="Last">
-                  »
-                </a>
-              </li>
-            </ul>
-          </nav>
+                @for (page of getPages(); track page) {
+                <li class="page-item" [class.active]="currentPage === page">
+                  <a class="page-link" (click)="changePage(page)">{{page}}</a>
+                </li>
+                }
+
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" (click)="nextPage()" aria-label="Next">
+                    >
+                  </a>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" (click)="lastPage()" aria-label="Last">
+                    »
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          }
         </div>
-        }
       </div>
     </div>
   </div>

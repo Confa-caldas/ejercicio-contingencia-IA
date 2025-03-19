@@ -93,6 +93,7 @@ a:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
+  font-family: 'Bree Regular', 'Helvetica Neue', sans-serif !important;
 }
 
 .user-role {
@@ -473,6 +474,7 @@ html, body {
   padding: 12px 15px;
   text-decoration: none;
   color: #333;
+  
 }
 
 .menu-item i {

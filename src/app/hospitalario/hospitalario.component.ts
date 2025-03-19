@@ -1,35 +1,141 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Paciente } from '../interfaces/paciente.interface';
 import { HistoriaClinicaComponent } from '../historia-clinica/historia-clinica.component';
+import { ModalMessagesComponent } from '../modal-messages/modal-messages.component';
 import { MedicamentosComponent } from '../medicamentos/medicamentos.component';
+import { AuthenticationService } from '../services/authentication.service';
+import { UtilitiesServiceService } from '../services/utilities.service';
+import { HistoriaClinica, DetalleHistoriaClinica } from '../interfaces/medicamento.interface';
 
 @Component({
   selector: 'app-hospitalario',
   standalone: true,
-  imports: [FormsModule, HistoriaClinicaComponent, MedicamentosComponent],
+  imports: [FormsModule, HistoriaClinicaComponent, MedicamentosComponent, ModalMessagesComponent, CommonModule],
   templateUrl: './hospitalario.component.html',
   styleUrl: './hospitalario.component.css'
 })
-export class HospitalarioComponent {
+export class HospitalarioComponent implements OnInit {
 
-  sabs: string[] = ['SAB1', 'SAB2', 'SAB3'];
+  sabs: string[] = [];
   sabSeleccionado: string = '';
   pacientes: Paciente[] = [];
   mostrarHistoriaClinica: boolean = false;
-  pacienteSeleccionado: string | null = null;
+  pacienteSeleccionado: Paciente | null = null;
+  pacienteActual: string | null = null;
   mostrarMedicamentos: boolean = false;
   pageSize: number = 15; // tamaño de página
   currentPage: number = 1; // página actual
+  historiasClinicas: HistoriaClinica[] = [];
+
+  constructor(
+    private utilitiesService: UtilitiesServiceService,
+    private authService: AuthenticationService,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    this.utilitiesService.loading = true;
+    this.verificarTokenYCargarSabs();
+  }
+
+  verificarTokenYCargarSabs() {
+    if (!this.utilitiesService.isAuthenticated()) {
+      this.utilitiesService.loading = false;
+      this.utilitiesService.showError('¡Ten presente!', 'No se encontró token');
+      $('.btn-modal-error').click();
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    const token = localStorage.getItem('authToken');
+    this.authService.obtenerSab(token!).subscribe({
+      next: (response: any) => {
+        if (Array.isArray(response)) {
+          this.sabs = response.map(item => item.sab);
+          this.utilitiesService.loading = false;
+        } else if (this.authService.esTokenInvalido(response)) {
+          this.utilitiesService.loading = false;
+          this.utilitiesService.showError('¡Ten presente!', 'Token inválido');
+          $('.btn-modal-error').click();
+          this.router.navigate(['/login']);
+        } else {
+          this.utilitiesService.loading = false;
+          this.utilitiesService.showError('¡Ten presente!', 'Error al cargar los SABs');
+          $('.btn-modal-error').click();
+        }
+      },
+      error: (error) => {
+        this.utilitiesService.loading = false;
+        this.utilitiesService.showError('¡Ten presente!', 'Error al cargar SABs');
+        $('.btn-modal-error').click();
+        if (error.status === 401) {
+          localStorage.clear();
+          this.router.navigate(['/login']);
+        }
+      }
+    });
+  }
 
   onSabChange(event: any): void {
+    this.utilitiesService.loading = true;
     this.sabSeleccionado = event.target.value;
-    this.cargarPacientes();
-    // Ocultar las secciones al cambiar de SAB
+    if (this.sabSeleccionado) {
+      if (!this.utilitiesService.isAuthenticated()) {
+        this.utilitiesService.loading = false;
+        this.utilitiesService.showError('¡Ten presente!', 'No se encontró token');
+        $('.btn-modal-error').click();
+        this.router.navigate(['/login']);
+        return;
+      }
+
+      const token = localStorage.getItem('authToken');
+      this.authService.obtenerPacientesSab(this.sabSeleccionado, token!).subscribe({
+        next: (response: any) => {
+          this.utilitiesService.loading = false;
+          const pacientesData = Array.isArray(response) ? response : [response];
+          if (pacientesData[0]?.respuesta === "Paciente encontrado") {
+            this.pacientes = pacientesData.map(item => ({
+              numeroDocumento: item.numeroDocumento || '',
+              nombre: item.nombre || '',
+              numeroAdmision: item.numeroAdmision || '',
+              numeroCama: item.numeroCama || '',
+              hcAdicional: item.hcAdicional || '',
+              plan: item.plan || '',
+              hcAfiliacion: item.hcAfiliacion || '',
+              convenio: item.convenio || '',
+              codigoSAB: item.codigoSAB || '',
+              codigoPlan: item.codigoPlan || '',
+              fechaNacimiento: item.fechaNacimiento || '',
+              sexo: item.sexo || '',
+              tipoDocumento: item.tipoDocumento || ''
+            }));
+            this.currentPage = 1;
+          } else {
+            this.pacientes = [];
+            this.utilitiesService.loading = false;
+            this.utilitiesService.showError('¡Ten presente!', 'No se encontraron pacientes para el SAB seleccionado');
+            $('.btn-modal-error').click();
+          }
+        },
+        error: (error) => {
+          this.utilitiesService.loading = false;
+          this.utilitiesService.showError('¡Ten presente!', 'Error al cargar pacientes');
+          $('.btn-modal-error').click();
+          this.pacientes = [];
+          if (error.status === 401) {
+            localStorage.clear();
+            this.router.navigate(['/login']);
+          }
+        }
+      });
+    }
     this.ocultarTodo();
-  }
+}
+
 
   cargarPacientes(): void {
     // Simula datos - Reemplazar con llamada real a tu servicio
@@ -40,33 +146,25 @@ export class HospitalarioComponent {
     ];
   }
 
-  verHistoriaClinica(pacienteId: any): void {
-    if (this.pacienteSeleccionado === pacienteId && this.mostrarHistoriaClinica) {
-      // Si ya está mostrando la HC del mismo paciente, la oculta
-      this.mostrarHistoriaClinica = false;
-      this.pacienteSeleccionado = null;
-    } else {
-      // Muestra la HC del paciente seleccionado
-      this.pacienteSeleccionado = pacienteId;
-      this.mostrarHistoriaClinica = true;
-      this.mostrarMedicamentos = false;
-    }
+  verHistoriaClinica(paciente: Paciente) {
+    this.pacienteSeleccionado = paciente;
+    this.mostrarHistoriaClinica = true;
+    this.mostrarMedicamentos = false;
   }
 
-  verMedicamentos(pacienteId: any): void {
-    if (this.pacienteSeleccionado === pacienteId && this.mostrarMedicamentos) {
-      // Si ya está mostrando los medicamentos del mismo paciente, los oculta
+
+  verMedicamentos(paciente: Paciente) {
+    if (this.pacienteSeleccionado?.numeroDocumento === paciente.numeroDocumento && this.mostrarMedicamentos) {
       this.mostrarMedicamentos = false;
       this.pacienteSeleccionado = null;
     } else {
-      // Muestra los medicamentos del paciente seleccionado
-      this.pacienteSeleccionado = pacienteId;
+      this.pacienteSeleccionado = paciente;
       this.mostrarMedicamentos = true;
       this.mostrarHistoriaClinica = false;
     }
   }
 
-  ocultarTodo(): void {
+  ocultarTodo() {
     this.mostrarHistoriaClinica = false;
     this.mostrarMedicamentos = false;
     this.pacienteSeleccionado = null;

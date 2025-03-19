@@ -4,7 +4,9 @@ import { debounceTime } from 'rxjs/operators';
 import { HistoriaClinicaComponent } from '../historia-clinica/historia-clinica.component';
 import { ReactiveFormsModule, FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import { AuthenticationService } from '../services/authentication.service';
+import { firstValueFrom } from 'rxjs';
+import { UtilitiesServiceService } from '../services/utilities.service';
 @Component({
   selector: 'app-citas-medicas',
   standalone: true,
@@ -17,42 +19,37 @@ export class CitasMedicasComponent implements OnInit {
   citasFiltradas: CitaMedica[] = [];
   mostrarHistoria: boolean = false;
   pacienteSeleccionadoId: string | null = null;
+  citaSeleccionada: CitaMedica | null = null;
   filtrosForm: FormGroup;
   pageSize: number = 15;
   currentPage: number = 1;
 
   columnas = [
-    { key: 'codigo', label: 'Código' },
     { key: 'fecha', label: 'Fecha' },
-    { key: 'codMedico', label: 'Cod. Médico' },
     { key: 'hora', label: 'Hora' },
     { key: 'tipoCita', label: 'Tipo Cita' },
     { key: 'servicio', label: 'Servicio' },
-    { key: 'cedula', label: 'Cédula' },
-    { key: 'adicional', label: 'Adicional' },
-    { key: 'nombre', label: 'Nombre' },
-    { key: 'apellido', label: 'Apellido' },
+    { key: 'cedulaPaciente', label: 'Cédula' },
+    { key: 'nombrePaciente', label: 'Nombre' },
     { key: 'codPlan', label: 'Cod. Plan' },
     { key: 'legalizacion', label: 'Legalización' },
     { key: 'pago', label: 'Pago' },
-    { key: 'prestam', label: 'Prestam' }
+    { key: 'prestamo', label: 'Prestamo' }
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthenticationService,
+    private utilitiesService: UtilitiesServiceService
+  ) {
     this.filtrosForm = this.fb.group({});
-    // Inicializar los controles del formulario
     this.columnas.forEach(columna => {
       this.filtrosForm.addControl(columna.key, this.fb.control(''));
     });
   }
 
-  ngOnInit() {
-    this.cargarCitas();
-    this.filtrosForm = new FormGroup({});
-    this.columnas.forEach(columna => {
-      this.filtrosForm.addControl(columna.key, new FormControl(''));
-    });
-  
+  async ngOnInit() {
+    await this.loadCitasMedicas();
     this.configurarFiltros();
   }
 
@@ -60,63 +57,35 @@ export class CitasMedicasComponent implements OnInit {
     return this.filtrosForm.get(key) as FormControl;
   }
   
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
+      this.currentPage = page;
+    }
+  }
 
-  cargarCitas() {
-    // Aquí deberías hacer la llamada a tu servicio
-    this.citas = [
-      {
-        codigo: 'C001',
-        fecha: '2024-03-20',
-        codMedico: 'M123',
-        hora: '09:00',
-        tipoCita: 'General',
-        servicio: 'Consulta Externa',
-        cedula: '12345678',
-        adicional: 'N/A',
-        nombre: 'Juan',
-        apellido: 'Pérez',
-        codPlan: 'P001',
-        legalizacion: 'Sí',
-        pago: 'Realizado',
-        prestam: 'No'
-      },
-      {
-        codigo: 'C002',
-        fecha: '2024-03-21',
-        codMedico: 'M124',
-        hora: '10:00',
-        tipoCita: 'Especialista', 
-        servicio: 'Consulta Externa',
-        cedula: '87654321',
-        adicional: 'N/A',
-        nombre: 'Ana',
-        apellido: 'Gómez',
-        codPlan: 'P002',  
-        legalizacion: 'No',
-        pago: 'Pendiente',
-        prestam: 'Sí'
-      },  
-      {
-        codigo: 'C003',
-        fecha: '2024-03-22',
-        codMedico: 'M125',
-        hora: '11:00',
-        tipoCita: 'General',  
-        servicio: 'Consulta Externa',
-        cedula: '98765432',
-        adicional: 'N/A',
-        nombre: 'Carlos',
-        apellido: 'López',
-        codPlan: 'P003',
-        legalizacion: 'Sí',
-        pago: 'Realizado',
-        prestam: 'No'
+  async loadCitasMedicas() {
+    this.utilitiesService.loading = true;
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        this.utilitiesService.loading = false;
+        this.utilitiesService.showError('Error en la llamada al servicio:', 'No se encontró el token');
+        $('.btn-modal-error').click();
+        console.error('No se encontró el token');
+        return;
       }
-      
-      
-
-    ];
-    this.citasFiltradas = [...this.citas];
+      this.utilitiesService.loading = false;
+      const response = await firstValueFrom(this.authService.obtenerCitasMedicas(token));
+      this.citas = Array.isArray(response) ? response : [response];
+      this.citasFiltradas = [...this.citas];
+    } catch (error) {
+      this.utilitiesService.loading = false;
+      this.utilitiesService.showError('Error al cargar citas:', error as string);
+      $('.btn-modal-error').click();
+      console.error('Error al cargar citas:', error);
+      this.citas = [];
+      this.citasFiltradas = [];
+    }
   }
 
   configurarFiltros() {
@@ -131,20 +100,22 @@ export class CitasMedicasComponent implements OnInit {
         const filterValue = this.filtrosForm.get(columna.key)?.value?.toLowerCase();
         if (!filterValue) return true;
         
-        const citaValue = String(cita[columna.key as keyof CitaMedica])?.toLowerCase();
+        const citaValue = String(cita[columna.key as keyof CitaMedica] || '')?.toLowerCase();
         return citaValue.includes(filterValue);
       });
     });
   }
   
-  verHistoriaClinica(cedula: string) {
-    this.pacienteSeleccionadoId = cedula;
+  verHistoriaClinica(cita: CitaMedica) {
+    this.pacienteSeleccionadoId = cita.cedulaPaciente || null; // Asegurar que sea string | null
     this.mostrarHistoria = true;
+    this.citaSeleccionada = cita;
   }
 
   cerrarHistoriaClinica() {
     this.mostrarHistoria = false;
     this.pacienteSeleccionadoId = null;
+    this.citaSeleccionada = null; // Limpiar la cita seleccionada al cerrar
   }
 
   get visibleItems() {
@@ -188,5 +159,19 @@ export class CitasMedicasComponent implements OnInit {
     if (this.currentPage > 1) {
       this.currentPage--;
     }
+  }
+
+  getVisiblePages(): number[] {
+    const maxVisiblePages = 5;
+    const halfVisible = Math.floor(maxVisiblePages / 2);
+    
+    let start = Math.max(this.currentPage - halfVisible, 1);
+    let end = Math.min(start + maxVisiblePages - 1, this.totalPages);
+    
+    if (end === this.totalPages) {
+      start = Math.max(end - maxVisiblePages + 1, 1);
+    }
+    
+    return Array.from({length: end - start + 1}, (_, i) => start + i);
   }
 }
