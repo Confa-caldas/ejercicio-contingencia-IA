@@ -82,6 +82,7 @@ export class LoginComponent {
                     documento: numeroDocumento[0],
                   }
                   if (estadoUsuario) {
+                    //this.loginExitoso('eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNzdkMmZiYjhlYTE0ZTYzOWUxYmY5OTE4N2JjNzAyZiIsInN1YiI6Ik1lZGljYW1lbnRvcyIsImlzcyI6IkFDQVJET05BIiwiaWF0IjoxNzQyMzIzMzAwLCJleHAiOjE3NDI5MjgxMDB9.sUvmQv6PUavpwK2R2Rf9Wu3XpjtgF63QVeeff75IWAY', 'CAROL TATIANA GIRALDO HERNANDEZ', 'CAROLG');
                     this.authenticationService.inicioSesionSas(bodySas).subscribe(
                       (response: any) => {
                         const estado = response.estado;

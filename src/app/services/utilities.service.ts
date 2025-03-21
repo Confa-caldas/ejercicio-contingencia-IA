@@ -15,7 +15,7 @@ export class UtilitiesServiceService {
   messageLoading: string = '';
 
   // Inactividad
-  private readonly logoutDuration = 3600000; 
+  private readonly logoutDuration = 120000; 
   private activityTimeout: any;
   inactivitySubject = new Subject<boolean>();
   private hiddenStartTime: number | null = null; 

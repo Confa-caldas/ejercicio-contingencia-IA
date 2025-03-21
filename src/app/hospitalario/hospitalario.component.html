@@ -102,10 +102,10 @@
                   <div class="card-body">
                     <app-historia-clinica 
                       [paciente]="{ 
-                        numeroDocumento: pacienteSeleccionado?.numeroDocumento || '', 
-                        numeroAdmision: pacienteSeleccionado?.numeroAdmision || '',
-                        hcAdicional: pacienteSeleccionado?.hcAdicional || '',
-                        nombre: pacienteSeleccionado?.nombre || ''
+                        numeroDocumento: pacienteSeleccionado.numeroDocumento || '', 
+                        numeroAdmision: pacienteSeleccionado.numeroAdmision || '',
+                        hcAdicional: pacienteSeleccionado.hcAdicional || '',
+                        nombre: pacienteSeleccionado.nombre || ''
                       }"
                       [origen]="'hospitalario'">
                     </app-historia-clinica>
