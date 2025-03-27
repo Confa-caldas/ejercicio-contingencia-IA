@@ -4,12 +4,13 @@ import { HistoriaClinica, DetalleHistoriaClinica } from '../interfaces/medicamen
 import { AuthenticationService } from '../services/authentication.service';
 import { UtilitiesServiceService } from '../services/utilities.service';
 import { Paciente } from '../interfaces/paciente.interface';
+import { CommonModule } from '@angular/common'; 
 import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-historia-clinica',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './historia-clinica.component.html',
   styleUrl: './historia-clinica.component.css'
 })
@@ -107,6 +108,8 @@ export class HistoriaClinicaComponent implements OnChanges {
 
       const detalleResponse = Array.isArray(response) ? response[0] : response;
       this.detalleHistoria = detalleResponse;
+      if (this.detalleHistoria?.txt) {
+      }
       this.utilitiesService.loading = false;
     } catch (error) {
       this.utilitiesService.loading = false;
@@ -115,6 +118,29 @@ export class HistoriaClinicaComponent implements OnChanges {
       this.historiaSeleccionada = null;
       this.detalleHistoria = null;
     }
+  }
+  formatearTexto(texto: string): string[] {
+    if (!texto) return ['No disponible'];
+    
+    const lineas = texto.split('\n').map(linea => linea.trim()).filter(linea => linea);
+    
+    return lineas.map(linea => {
+      // Si la línea contiene "==>>", es un título con contenido
+      if (linea.includes('==>>')) {
+        const [titulo, contenido] = linea.split('==>>').map(parte => parte.trim());
+        return `<strong>${titulo}</strong>${contenido ? ': ' + contenido : ''}`;
+      }
+      // Si la línea está en mayúsculas, probablemente es un título
+      else if (linea === linea.toUpperCase() && linea.length > 3) {
+        return `<strong>${linea}</strong>`;
+      }
+      // Si la línea comienza con *, es un punto de lista
+      else if (linea.startsWith('*')) {
+        return `<span style="margin-left: 1rem;">• ${linea.substring(1).trim()}</span>`;
+      }
+      // Línea normal
+      return linea;
+    });
   }
 
   get visibleItems() {

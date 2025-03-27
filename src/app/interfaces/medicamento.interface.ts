@@ -104,6 +104,7 @@ export interface DetalleHistoriaClinica {
   especialidad?: string;
   fechahc?: string;
   horaHc?: string;
+  txt?: string;
 
 }
 
@@ -137,5 +138,6 @@ interface HistoriaCitaMedica {
   legalizacion: string;
   pago: string;
   prestamo: string;
+  txt?: string;
 }
 

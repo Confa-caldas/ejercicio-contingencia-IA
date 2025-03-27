@@ -38,65 +38,13 @@
                 </div>
                 <div class="detail-info-container">
                   <div class="row">
-                    <!-- Columna izquierda -->
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                       <div class="info-group">
-                        <label>Plantilla</label>
-                        <div class="info-value" style="text-wrap: wrap">{{ detalleHistoria.plantilla || 'No disponible' }}</div>
-                      </div>
-                      
-                      <div class="info-group">
-                        <label>Diagnóstico</label>
-                        <div class="info-value" style="text-wrap: wrap">{{ detalleHistoria.descdx || 'No disponible' }}</div>
-                      </div>
-
-                      <div class="info-group">
-                        <label>Plan</label>
-                        <div class="info-value" style="text-wrap: wrap">{{ detalleHistoria.plan || 'No disponible' }}</div>
-                      </div>
-
-                      <div class="info-group">
-                        <label>Afiliación</label>
-                        <div class="info-value" style="text-wrap: wrap">{{ detalleHistoria.afiliacion || 'No disponible' }}</div>
-                      </div>
-
-                      <div class="info-group">
-                        <label>Descripción motivo</label>
-                        <div class="info-value" style="text-wrap: wrap">{{ detalleHistoria.descmotivo || 'No disponible' }}</div>
-                      </div>
-                    </div>
-
-                    <!-- Columna derecha -->
-                    <div class="col-md-6">
-                      <div class="info-group">
-                        <label>Médico</label>
-                        <div class="info-value" style="text-wrap: wrap">{{ detalleHistoria.medNom || 'No disponible' }}</div>
-                      </div>
-
-                      <div class="info-group">
-                        <label>Especialidad</label>
-                        <div class="info-value" style="text-wrap: wrap">{{ detalleHistoria.especialidad || 'No disponible' }}</div>
-                      </div>
-
-                      <div class="info-group">
-                        <label>Fecha y Hora</label>
-                        <div class="info-value" style="text-wrap: wrap">
-                          {{ detalleHistoria.fechahc || 'No disponible' }} {{ detalleHistoria.horaHc || '' }}
+                        <div class="info-value texto-formateado">
+                          @for (linea of formatearTexto(detalleHistoria.txt || ''); track $index) {
+                            <p [innerHTML]="linea"></p>
+                          }
                         </div>
-                      </div>
-
-                      <div class="info-group">
-                        <label>Datos del Paciente</label>
-                        <div class="info-value" style="text-wrap: wrap">
-                          <div>Nombre: {{ detalleHistoria.nombre || 'No disponible' }}</div>
-                          <div>Edad: {{ detalleHistoria.edad || 'No disponible' }}</div>
-                          <div>Sexo: {{ detalleHistoria.sexo || 'No disponible' }}</div>
-                        </div>
-                      </div>
-
-                      <div class="info-group">
-                        <label>Visita</label>
-                        <div class="info-value" style="text-wrap: wrap">{{ detalleHistoria.visita || 'No disponible' }}</div>
                       </div>
                     </div>
                   </div>

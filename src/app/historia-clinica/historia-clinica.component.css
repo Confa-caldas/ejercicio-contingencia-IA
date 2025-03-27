@@ -90,8 +90,11 @@ p {
 
 .detail-info-container {
   width: 100%;
-  padding: 1.5rem;
+  padding: 1rem;
   margin: 0;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 /* Asegurar que la fila ocupe todo el ancho */
@@ -235,6 +238,43 @@ td[colspan="5"] {
 .table td div {
   word-break: normal;
   white-space: normal;
+}
+
+.texto-formateado {
+  white-space: pre-line;
+  line-height: 1.5;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.texto-formateado p {
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+}
+
+/* Estilos para los títulos */
+.texto-formateado p strong {
+  color: #0088cc;
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-size: 1.1em;
+}
+
+/* Estilos para las viñetas */
+.texto-formateado p:has(::first-letter:is(•)) {
+  padding-left: 2rem;
+  position: relative;
+}
+
+/* Espaciado entre secciones */
+.texto-formateado p:has(strong) {
+  margin-top: 1rem;
+  padding-left: 0;
+}
+
+.texto-formateado p:has(strong):first-child {
+  margin-top: 0;
 }
 
 /* Ajustes para dispositivos móviles */
