@@ -10,8 +10,8 @@ export const environment = {
   consultaLambdaDirecta: 'https://api-facial.confa.co/identificarvalidar',
   excepcionFacial: 'ojos-boca-dimension-gafasDeSol-brillo',
   tipoValidacionFacial: 'validacion',
-  identificacionSas: 'http://localhost:8081/contengenciaSaludWS/rest/contingencia/',
- //identificacionSas: 'https://sasweb.confa.co:8322/medicamentosWS/rest/medicamentos/', //ruta apuntando al DMZSAS
+  //identificacionSas: 'http://localhost:8081/contengenciaSaludWS/rest/contingencia/',
+  identificacionSas: 'https://sasweb.confa.co:8322/contengenciaSaludWS/rest/contingencia/', //ruta apuntando al DMZSAS
   //identificacionSas: 'https://sasweb.confa.co:8586/medicamentosWS/rest/medicamentos/', // producción
   parametro1: "hlZTM4ZDcwNDRlODcyNzZDX1BPUlQqMjAxOCQ=", 
   parametro2: "UG9ydGFsX0NvbmZhODRkZGZiMzQxMjZmYzNhND",

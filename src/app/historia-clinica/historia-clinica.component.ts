@@ -107,9 +107,15 @@ export class HistoriaClinicaComponent implements OnChanges {
       );
 
       const detalleResponse = Array.isArray(response) ? response[0] : response;
-      this.detalleHistoria = detalleResponse;
-      if (this.detalleHistoria?.txt) {
+      
+      if (!detalleResponse) {
+        this.detalleHistoria = {
+          txt: 'No hay detalle disponible',
+        } as DetalleHistoriaClinica;
+      } else {
+        this.detalleHistoria = detalleResponse;
       }
+      
       this.utilitiesService.loading = false;
     } catch (error) {
       this.utilitiesService.loading = false;

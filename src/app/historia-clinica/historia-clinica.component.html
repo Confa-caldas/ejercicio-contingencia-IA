@@ -41,8 +41,12 @@
                     <div class="col-md-12">
                       <div class="info-group">
                         <div class="info-value texto-formateado">
-                          @for (linea of formatearTexto(detalleHistoria.txt || ''); track $index) {
-                            <p [innerHTML]="linea"></p>
+                          @if (detalleHistoria.txt === 'No hay detalle disponible') {
+                            <p class="text-muted text-center">No hay detalle disponible</p>
+                          } @else {
+                            @for (linea of formatearTexto(detalleHistoria.txt || ''); track $index) {
+                              <p [innerHTML]="linea"></p>
+                            }
                           }
                         </div>
                       </div>

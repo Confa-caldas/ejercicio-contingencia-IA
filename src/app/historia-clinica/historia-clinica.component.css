@@ -291,4 +291,12 @@ td[colspan="5"] {
   }
 }
 
+.texto-formateado .text-muted {
+  font-style: italic;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  margin: 0;
+}
+
 
